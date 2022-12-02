@@ -1,0 +1,33 @@
+version: "3.9"
+    
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - esam_course_db:/var/lib/mysql
+    ports:
+      - "3313:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:6.0
+    volumes:
+      - esam_course_wordpress:/var/www/html
+    ports:
+      - "8802:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: admin
+      WORDPRESS_DB_PASSWORD: admin
+      WORDPRESS_DB_NAME: wordpress
+volumes:
+  esam_course_db: {}
+  esam_course_wordpress: {}
